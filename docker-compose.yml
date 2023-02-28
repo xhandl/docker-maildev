@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
     maildev:
-        image: maildev/maildev
-        container_name: maildev
+        image: ${IMAGE:-maildev/maildev:2.0.5}
+        container_name: ${CONTAINER_NAME:-maildev}
         ports:
-            - "1080:1080"
-            - "1025:1025"
+            - ${WEB_PORT:-1080}:1080
+            - ${SMTP_PORT:-1025}:1025
         restart: always
