@@ -1,11 +1,25 @@
 services:
     maildev:
-        image: ${IMAGE:-maildev/maildev:2.0.5}
+        image: ${IMAGE:-maildev/maildev:latest}
         container_name: ${CONTAINER_NAME:-maildev}
+        environment:
+            MAILDEV_WEB_PORT: ${WEB_PORT:-1080}
+            MAILDEV_WEB_USER: ${MAILDEV_WEB_USER:-admin}
+            MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASS:-admin}
+            MAILDEV_MAIL_DIRECTORY: /tmp/maildev
+        volumes:
+            - ./volumes/maildev:/tmp/maildev
         ports:
             - ${WEB_PORT:-1080}:1080
             - ${SMTP_PORT:-1025}:1025
         restart: always
+        healthcheck:
+            test: exit 0    # Always healthy because wget is not working with authorization
+            interval: 1m30s
+            timeout: 5s
+            retries: 3
+            start_period: 30s
+            start_interval: 5s
         networks:
             - maildev
 

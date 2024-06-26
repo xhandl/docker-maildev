@@ -1,0 +1,12 @@
+services:
+    maildev:
+        environment:
+            VIRTUAL_HOST: yourdomain.com
+            LETSENCRYPT_HOST: yourdomain.com
+            LETSENCRYPT_EMAIL: your@email.com
+        networks:
+            - nginx-proxy
+
+networks:
+    nginx-proxy:
+        external: true
